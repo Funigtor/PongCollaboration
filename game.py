@@ -1,4 +1,26 @@
 from Tkinter import *
+def gaucheH(key):
+    global gh,dh
+    gh=gh-5
+    dh=dh-5
+    can.coords(paveJoueurB,gh,190,dh,200)
+def droiteH(key):
+    global dh,gh
+    gh=gh+5
+    dh=dh+5
+    can.coords(paveJoueurB,gh,190,dh,200)
+def gaucheB(key):
+    global gb,db
+    gb=gb-5
+    db=db-5
+    can.coords(paveJoueurA,gb,10,db,20)
+
+def droiteB(key):
+    global db,gb
+    gb=gb+5
+    db=db+5
+    can.coords(paveJoueurA,gb,10,db,20)
+
 def animation():
     global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas
     futurX,futurY = balleX+VX, balleY+VY
@@ -18,7 +40,7 @@ def animation():
         futurY = balleY + VY
     balleX, balleY = futurX, futurY
     can.coords(balle,balleX - 10,balleY - 10, balleX + 10,balleY + 10)
-    fen.after(5,animation)
+    fen.after(15,animation)
 scoreHaut = 0
 scoreBas = 0
 gh = 130
@@ -37,4 +59,9 @@ balle = can.create_oval(40,90,60,110,fill="red")
 paveJoueurA = can.create_rectangle(gb,10,db,20,fill="blue")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
 animation()
+can.focus_set()
+can.bind("<Left>",gaucheB)
+can.bind("<Right>",droiteB)
+can.bind("<q>",gaucheH)
+can.bind("<d>",droiteH)
 fen.mainloop()
