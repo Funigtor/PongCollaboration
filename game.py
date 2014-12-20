@@ -18,8 +18,7 @@ can.grid()
 VX,VY = 2,2
 balleX, balleY = 50,100
 balle = can.create_oval(40,90,60,110,fill="red")
-paveJoueurA = can.create_rectangle(gb,db,fill="blue")
-paveJoueurB = can.create_rectangle(gh,dh,fill="blue")
+paveJoueurA = can.create_rectangle(gb,db,gb+5,db+5,fill="blue")
+paveJoueurB = can.create_rectangle(gh,dh,gh+5,dh+5,fill="blue")
 animation()
 fen.mainloop()
-
