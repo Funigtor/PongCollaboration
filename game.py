@@ -34,16 +34,16 @@ def animation():
         scoreHaut += 1
         scoreAfficheHaut.config(text = "Score joueur A:" + str(scoreHaut))
         balleSortie = True
-        while balleSortie == True:
-            print 'prout'
+        #while balleSortie == True: (Temporiser quand la balle sort)
+            #print 'test'
             #Ne rien faire
     if (futurX > dh or futurX < gh) and futurY < 10:
         scoreBas += 1
         scoreAfficheBas.config(text = "Score joueur B:" + str(scoreBas))
         remiseEnJeu.config(text="Appuyer sur X pour remettre en jeu")
         balleSortie = True
-        while balleSortie == True:
-            print 'prout'
+        #while balleSortie == True:
+            #print 'test'
             #Ne rien faire
     if futurX > 290 or futurX < 10:
         # S'applique aux murs gauche/droite
