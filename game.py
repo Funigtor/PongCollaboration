@@ -27,24 +27,35 @@ def commencer(key):
     animation()
     lancement.config(text="")
 
+def relancer(key):
+    global balleSortie,balle
+    balleSortie = False
+    can.delete(balle)
+    creation()
+
+def creation():
+    global VX,VY,balleX,balleY,balle
+    VX,VY = 2,2
+    balleX, balleY = 50,100
+    balle = can.create_oval(40,90,60,110,fill="red")
+
 def animation():
-    global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas
+    global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie
     futurX,futurY = balleX+VX, balleY+VY
     if (futurX > db or futurX < gb) and futurY > 190:
         scoreHaut += 1
         scoreAfficheHaut.config(text = "Score joueur A:" + str(scoreHaut))
+        remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
-        while balleSortie == True:
-            print 'prout'
-            #Ne rien faire
+        VX,VY = 0,0
+        fen.wait_variable(name='balleSortie')
     if (futurX > dh or futurX < gh) and futurY < 10:
         scoreBas += 1
         scoreAfficheBas.config(text = "Score joueur B:" + str(scoreBas))
-        remiseEnJeu.config(text="Appuyer sur X pour remettre en jeu")
+        remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
-        while balleSortie == True:
-            print 'prout'
-            #Ne rien faire
+        VX,VY = 0,0
+        fen.wait_variable(name='balleSortie')
     if futurX > 290 or futurX < 10:
         # S'applique aux murs gauche/droite
         VX = -VX
@@ -76,12 +87,12 @@ scoreAfficheBas.grid()
 scoreAfficheHaut.grid()
 remiseEnJeu.grid()
 lancement.grid()
-VX,VY = 2,2
-balleX, balleY = 50,100
-balle = can.create_oval(40,90,60,110,fill="red")
+creation()
 paveJoueurA = can.create_rectangle(gb,10,db,20,fill="blue")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
+balleSortie = False
 can.focus_set()
+can.bind("<Return>",relancer)
 can.bind("<c>",commencer)
 can.bind("<Left>",gaucheB)
 can.bind("<Right>",droiteB)
