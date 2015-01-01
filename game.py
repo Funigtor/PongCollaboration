@@ -1,4 +1,7 @@
+#coding: utf-8
 from Tkinter import *
+from sys import *
+
 def gaucheH(key):
     global gh,dh
     gh=gh-10
@@ -39,8 +42,13 @@ def creation():
     balleX, balleY = 50,100
     balle = can.create_oval(40,90,60,110,fill="red")
 
+def quitter():
+    global fen
+    fen.destroy()
+    sys.exit()
+
 def animation():
-    global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie
+    global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie,quitter
     futurX,futurY = balleX+VX, balleY+VY
     if (futurX > db or futurX < gb) and futurY > 190:
         scoreHaut += 1
@@ -48,14 +56,30 @@ def animation():
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
         VX,VY = 0,0
-        fen.wait_variable(name='balleSortie')
+        if scoreHaut == 10:
+            # Victoire du haut
+            can.delete(ALL)
+            can.create_image(0,0,image = jhwin)
+            quitter = Button(fen,text = "Quitter",command=quitter)
+            remiseEnJeu.config(text="")
+            quitter.grid()
+        else:
+            fen.wait_variable(name='balleSortie')
     if (futurX > dh or futurX < gh) and futurY < 10:
         scoreBas += 1
         scoreAfficheBas.config(text = "Score joueur B:" + str(scoreBas))
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
         VX,VY = 0,0
-        fen.wait_variable(name='balleSortie')
+        if scoreBas == 10:
+            # Victoire du bas 
+            can.delete(ALL)
+            can.create_image(0,0,image = jhwin)
+            remiseEnJeu.config(text="")
+            quitter = Button(fen,text = "Quitter",command=quitter)
+            quitter.grid()
+        else:
+          fen.wait_variable(name='balleSortie')
     if futurX > 290 or futurX < 10:
         # S'applique aux murs gauche/droite
         VX = -VX
@@ -98,4 +122,6 @@ can.bind("<Left>",gaucheB)
 can.bind("<Right>",droiteB)
 can.bind("<q>",gaucheH)
 can.bind("<d>",droiteH)
+jhwin = PhotoImage(file='jhwin.gif')
+#jbwin = PhotoImage(file='jbwin.gif')
 fen.mainloop()
