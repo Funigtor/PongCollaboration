@@ -1,6 +1,6 @@
 #coding: utf-8
 from Tkinter import *
-from sys import *
+from os import getpid,kill
 
 def gaucheH(key):
     global gh,dh
@@ -34,6 +34,7 @@ def relancer(key):
     global balleSortie,balle
     balleSortie = False
     can.delete(balle)
+    remiseEnJeu.config(text="")
     creation()
 
 def creation():
@@ -43,9 +44,8 @@ def creation():
     balle = can.create_oval(40,90,60,110,fill="red")
 
 def quitter():
-    global fen
-    fen.destroy()
-    sys.exit()
+    global pid
+    kill(pid,9)# Tuer le processus est une façon efficace de fermer le programme
 
 def animation():
     global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie,quitter
@@ -59,9 +59,9 @@ def animation():
         if scoreHaut == 10:
             # Victoire du haut
             can.delete(ALL)
-            can.create_image(0,0,image = jhwin)
-            quitter = Button(fen,text = "Quitter",command=quitter)
+            can.create_image(0,0,image = jhwin)            
             remiseEnJeu.config(text="")
+            quitter = Button(fen,text = "Quitter",command=quitter)
             quitter.grid()
         else:
             fen.wait_variable(name='balleSortie')
@@ -92,7 +92,8 @@ def animation():
         futurY = balleY + VY
     balleX, balleY = futurX, futurY
     can.coords(balle,balleX - 10,balleY - 10, balleX + 10,balleY + 10)
-    fen.after(15,animation)
+    if scoreHaut != 10 and scoreBas != 10: # Permet de stopper la fonction à la fin du jeu
+        fen.after(15,animation)
 scoreHaut = 0
 scoreBas = 0
 gh = 130
@@ -124,4 +125,5 @@ can.bind("<q>",gaucheH)
 can.bind("<d>",droiteH)
 jhwin = PhotoImage(file='jhwin.gif')
 #jbwin = PhotoImage(file='jbwin.gif')
+pid = getpid()
 fen.mainloop()
