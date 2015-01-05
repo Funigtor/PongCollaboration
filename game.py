@@ -59,7 +59,7 @@ def animation():
         if scoreHaut == 10:
             # Victoire du haut
             can.delete(ALL)
-            can.create_image(0,0,image = jhwin)            
+            can.create_text(150,30,text='Victoire du joueur en haut',fill='green',font=('Comic Sans',18))
             remiseEnJeu.config(text="")
             quitter = Button(fen,text = "Quitter",command=quitter)
             quitter.grid()
@@ -72,9 +72,9 @@ def animation():
         balleSortie = True
         VX,VY = 0,0
         if scoreBas == 10:
-            # Victoire du bas 
+            # Victoire du bas
             can.delete(ALL)
-            can.create_image(0,0,image = jhwin)
+            can.create_text(150,30,text='Victoire du joueur en bas',fill='blue',font=('Comic Sans',18))
             remiseEnJeu.config(text="")
             quitter = Button(fen,text = "Quitter",command=quitter)
             quitter.grid()
@@ -93,7 +93,7 @@ def animation():
     balleX, balleY = futurX, futurY
     can.coords(balle,balleX - 10,balleY - 10, balleX + 10,balleY + 10)
     if scoreHaut != 10 and scoreBas != 10: # Permet de stopper la fonction à la fin du jeu
-        fen.after(15,animation)
+        fen.after(20,animation)
 scoreHaut = 0
 scoreBas = 0
 gh = 130
@@ -101,7 +101,7 @@ gb = 130
 dh = 180
 db = 180
 fen = Tk()
-fen.geometry("300x300")
+fen.geometry("300x340")
 can = Canvas(fen, width = 300,height = 200,bg="white")
 can.grid()
 scoreAfficheHaut = Label(fen,text = "Score joueur A:" + str(scoreHaut))
@@ -113,7 +113,7 @@ scoreAfficheHaut.grid()
 remiseEnJeu.grid()
 lancement.grid()
 creation()
-paveJoueurA = can.create_rectangle(gb,10,db,20,fill="blue")
+paveJoueurA = can.create_rectangle(gb,10,db,20,fill="green")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
 balleSortie = False
 can.focus_set()
@@ -123,7 +123,5 @@ can.bind("<Left>",gaucheB)
 can.bind("<Right>",droiteB)
 can.bind("<q>",gaucheH)
 can.bind("<d>",droiteH)
-jhwin = PhotoImage(file='jhwin.gif')
-#jbwin = PhotoImage(file='jbwin.gif')
 pid = getpid()
 fen.mainloop()
