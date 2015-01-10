@@ -97,10 +97,10 @@ def animation():
         fen.after(20,animation)
 scoreHaut = 0
 scoreBas = 0
-gh = 130
-gb = 130
-dh = 180
-db = 180
+gh = 125
+gb = 125
+dh = 185
+db = 185
 fen = Tk()
 fen.geometry("300x340")
 can = Canvas(fen, width = 300,height = 200,bg="white")
