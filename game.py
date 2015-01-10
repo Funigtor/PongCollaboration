@@ -6,13 +6,13 @@ def gaucheH(key):
     global gh,dh
     gh=gh-10
     dh=dh-10
-    can.coords(paveJoueurA,gh,10,dh,20)
+    can.coords(paveJoueurA,gh,00,dh,10)
 
 def droiteH(key):
     global dh,gh
     gh=gh+10
     dh=dh+10
-    can.coords(paveJoueurA,gh,10,dh,20)
+    can.coords(paveJoueurA,gh,00,dh,10)
 
 def gaucheB(key):
     global gb,db
@@ -50,7 +50,7 @@ def quitter():
 def animation():
     global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie,quitter
     futurX,futurY = balleX+VX, balleY+VY
-    if (futurX > db or futurX < gb) and futurY > 190:
+    if (futurX > db or futurX < gb) and futurY > 180:
         scoreHaut += 1
         scoreAfficheHaut.config(text = "Score joueur A:" + str(scoreHaut))
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
@@ -65,7 +65,7 @@ def animation():
             quitter.grid()
         else:
             fen.wait_variable(name='balleSortie')
-    if (futurX > dh or futurX < gh) and futurY < 10:
+    if (futurX > dh or futurX < gh) and futurY < 20:
         scoreBas += 1
         scoreAfficheBas.config(text = "Score joueur B:" + str(scoreBas))
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
@@ -84,10 +84,10 @@ def animation():
         # S'applique aux murs gauche/droite
         VX = -VX
         futurX = balleX + VX
-    elif futurX < dh and futurX > gh and futurY < 10:
+    elif futurX < dh and futurX > gh and futurY < 20:
         VY = -VY
         futurY = balleY + VY
-    elif futurX < db and futurX > gb and futurY > 190:
+    elif futurX < db and futurX > gb and futurY > 180:
         VY = -VY
         futurY = balleY + VY
     balleX, balleY = futurX, futurY
@@ -113,7 +113,7 @@ scoreAfficheHaut.grid()
 remiseEnJeu.grid()
 lancement.grid()
 creation()
-paveJoueurA = can.create_rectangle(gb,10,db,20,fill="green")
+paveJoueurA = can.create_rectangle(gb,00,db,10,fill="green")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
 balleSortie = False
 can.focus_set()
