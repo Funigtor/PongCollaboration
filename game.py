@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 #coding: utf-8
 from Tkinter import *
 from os import getpid,kill
@@ -115,6 +116,8 @@ lancement.grid()
 creation()
 paveJoueurA = can.create_rectangle(gb,00,db,10,fill="green")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
+ligneJoueurA = can.create_line(00,10,300,10,fill='#c8c8c8')
+ligneJoueurB = can.create_line(00,190,300,190,fill='#c8c8c8')
 balleSortie = False
 can.focus_set()
 can.bind("<Return>",relancer)
