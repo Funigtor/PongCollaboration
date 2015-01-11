@@ -2,6 +2,7 @@
 #coding: utf-8
 from Tkinter import *
 from os import getpid,kill
+from random import randint
 
 def gaucheH(key):
     global gh,dh
@@ -40,9 +41,17 @@ def relancer(key):
 
 def creation():
     global VX,VY,balleX,balleY,balle
-    VX,VY = 2,2
-    balleX, balleY = 50,100
-    balle = can.create_oval(40,90,60,110,fill="red")
+    direction = randint(0,3)
+    if direction == 0:
+        VX,VY = 2,2
+    if direction == 1:
+        VX,VY = -2,2
+    if direction == 2:
+        VX,VY = 2,-2
+    if direction == 3:
+        VX,VY = -2,-2
+    balleX, balleY = 150,100
+    balle = can.create_oval(140,90,160,110,fill="red")
 
 def quitter():
     global pid
