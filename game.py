@@ -40,18 +40,34 @@ def relancer(key):
     creation()
 
 def creation():
-    global VX,VY,balleX,balleY,balle
+    global VX,VY,balleX,balleY,balle,hardcore
     direction = randint(0,3)
-    if direction == 0:
-        VX,VY = 2,2
-    if direction == 1:
-        VX,VY = -2,2
-    if direction == 2:
-        VX,VY = 2,-2
-    if direction == 3:
-        VX,VY = -2,-2
+    if modeHardcore == False:
+        if direction == 0:
+            VX,VY = 2,2
+        if direction == 1:
+            VX,VY = -2,2
+        if direction == 2:
+            VX,VY = 2,-2
+        if direction == 3:
+            VX,VY = -2,-2
+    else:
+        VX = randint(-3,3)
+        VY = randint(-3,3)
+        while VX == 0 or VY == 0:
+            VX = randint(-3,3)
+            VY = randint(-3,3)
     balleX, balleY = 150,100
     balle = can.create_oval(140,90,160,110,fill="red")
+
+def hardcore(key):
+    global modeHardcore
+    if modeHardcore == False:
+        modeHardcore = True
+        hardcoreStatut.config(text = "Mode Hardcore activé")
+    else:
+        modeHardcore = False
+        hardcoreStatut.config(text = "Mode Hardcore désactivé")
 
 def quitter():
     global pid
@@ -60,31 +76,33 @@ def quitter():
 def animation():
     global VX,VY,balleX,balleY,gb,gh,dh,db,scoreHaut,scoreBas,balleSortie,quitter
     futurX,futurY = balleX+VX, balleY+VY
-    if (futurX > db or futurX < gb) and futurY > 180:
+    if (futurX > db+10 or futurX < gb-10) and futurY > 180:
+        #Sortie de balle
         scoreHaut += 1
-        scoreAfficheHaut.config(text = "Score joueur A:" + str(scoreHaut))
+        scoreAfficheHaut.config(text = "Score joueur Haut:" + str(scoreHaut))
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
         VX,VY = 0,0
         if scoreHaut == 10:
             # Victoire du haut
             can.delete(ALL)
-            can.create_text(150,30,text='Victoire du joueur en haut',fill='green',font=('Comic Sans',18))
+            can.create_text(150,30,text='Victoire du joueur en haut',fill='green',font=('Comic Sans',16))
             remiseEnJeu.config(text="")
             quitter = Button(fen,text = "Quitter",command=quitter)
             quitter.grid()
         else:
             fen.wait_variable(name='balleSortie')
-    if (futurX > dh or futurX < gh) and futurY < 20:
+    if (futurX > dh+10 or futurX < gh-10) and futurY < 20:
+        #Sortie de balle
         scoreBas += 1
-        scoreAfficheBas.config(text = "Score joueur B:" + str(scoreBas))
+        scoreAfficheBas.config(text = "Score joueur Bas:" + str(scoreBas))
         remiseEnJeu.config(text="Appuyer sur Return pour remettre en jeu")
         balleSortie = True
         VX,VY = 0,0
         if scoreBas == 10:
             # Victoire du bas
             can.delete(ALL)
-            can.create_text(150,30,text='Victoire du joueur en bas',fill='blue',font=('Comic Sans',18))
+            can.create_text(150,30,text='Victoire du joueur en bas',fill='blue',font=('Comic Sans',16))
             remiseEnJeu.config(text="")
             quitter = Button(fen,text = "Quitter",command=quitter)
             quitter.grid()
@@ -94,10 +112,10 @@ def animation():
         # S'applique aux murs gauche/droite
         VX = -VX
         futurX = balleX + VX
-    elif futurX < dh and futurX > gh and futurY < 20:
+    elif futurX < dh+10 and futurX > gh-10 and futurY < 20:
         VY = -VY
         futurY = balleY + VY
-    elif futurX < db and futurX > gb and futurY > 180:
+    elif futurX < db+10 and futurX > gb-10 and futurY > 180:
         VY = -VY
         futurY = balleY + VY
     balleX, balleY = futurX, futurY
@@ -110,18 +128,21 @@ gh = 125
 gb = 125
 dh = 185
 db = 185
+modeHardcore = False
 fen = Tk()
-fen.geometry("300x340")
+fen.geometry("300x320")
 can = Canvas(fen, width = 300,height = 200,bg="white")
 can.grid()
-scoreAfficheHaut = Label(fen,text = "Score joueur A:" + str(scoreHaut))
-scoreAfficheBas = Label(fen,text = "Score joueur B:" + str(scoreBas))
+scoreAfficheHaut = Label(fen,text = "")
+scoreAfficheBas = Label(fen,text = "")
 lancement = Label(fen,text = "Appuyez sur c pour lancer le jeu")
 remiseEnJeu = Label(fen,text ="")
-scoreAfficheBas.grid()
+hardcoreStatut = Label(fen, text = "Appuyez sur H pour activer le mode hardcore")
 scoreAfficheHaut.grid()
+scoreAfficheBas.grid()
 remiseEnJeu.grid()
 lancement.grid()
+hardcoreStatut.grid()
 creation()
 paveJoueurA = can.create_rectangle(gb,00,db,10,fill="green")
 paveJoueurB = can.create_rectangle(gh,190,dh,200,fill="blue")
@@ -135,5 +156,6 @@ can.bind("<Left>",gaucheB)
 can.bind("<Right>",droiteB)
 can.bind("<q>",gaucheH)
 can.bind("<d>",droiteH)
+can.bind("<h>",hardcore)
 pid = getpid()
 fen.mainloop()
